@@ -3,8 +3,9 @@ from langchain import OpenAI, ConversationChain, LLMChain, PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 
 import os
-os.environ["OPENAI_API_KEY"] = ""
+# os.environ["OPENAI_API_KEY"] = ""
 
+openai_key = os.environ.get('OPENAI_API_KEY')
 
 app = Flask(__name__)
 
