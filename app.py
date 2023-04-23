@@ -1,15 +1,15 @@
 from flask import Flask, request, render_template
-from langchain import OpenAI, ConversationChain, LLMChain, PromptTemplate
+from langchain import OpenAI, LLMChain, PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 
 import os
-# os.environ["OPENAI_API_KEY"] = ""
+os.environ["OPENAI_API_KEY"] = ""
 
-openai_key = os.environ.get('OPENAI_API_KEY')
+# openai_key = os.environ.get('OPENAI_API_KEY')
 
 app = Flask(__name__)
 
-ENV = 'prod'
+ENV = 'dev'
 
 if ENV == 'dev':
     app.debug = True
@@ -37,7 +37,7 @@ prompt = PromptTemplate(
     template=template
 )
 
-chatgpt_chain = LLMChain(
+conversation = LLMChain(
     llm=OpenAI(temperature=0.9), 
     prompt=prompt, 
     verbose=True, 
@@ -50,7 +50,7 @@ def reply_recommender():
         user_input = request.form['user_input']
         if user_input == '':
             return render_template('index.html', message='Please enter the input')
-        response = chatgpt_chain.predict(human_input=user_input)
+        response = conversation.predict(human_input=user_input)
         return render_template('index.html', output=response)
         
 
